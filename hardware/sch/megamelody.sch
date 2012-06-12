@@ -1,0 +1,11 @@
+v 20110115 2
+C 40000 40000 0 0 0 title-B.sym
+C 45500 43300 1 0 0 ATmega8-SMD.sym
+{
+T 45600 48100 5 10 0 0 0 0 1
+footprint=SO8
+T 47800 47900 5 10 1 1 0 6 1
+refdes=U?
+T 45600 48900 5 10 0 0 0 0 1
+device=ATmega8
+}
