@@ -1,0 +1,1 @@
+Stairway:d=4,o=5,b=180:a,c,e,a,b,c,e,b,c6,c,e,c6,a,a,g,e,f,f,f,8b,8c6,8b,8g,2a

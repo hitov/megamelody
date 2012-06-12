@@ -1,0 +1,1 @@
+Partyline:d=8,o=5,b=125:16g,g,16g,g,f,4d,p,d,16g,g,16g,g,f,a#,4g,p,16g,g,16g,g,a#,c6,a#,g,f,16g,g,16g,g,a#,4g

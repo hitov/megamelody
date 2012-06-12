@@ -1,0 +1,1 @@
+BlackNight:d=8,o=5,b=180:4f.,4g#,f,4d#.,4c,d#,4f.,4g#,f,4a#,g#,4f.,4d#,f,1p,g#,4g#,f,1p,4f.,4g#,f,4d#.,4c,d#,4f.,4g#,f,4a#,g#,4f.,4d#,f,1p,g#,4g#,f

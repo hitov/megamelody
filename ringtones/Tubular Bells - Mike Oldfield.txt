@@ -1,0 +1,1 @@
+Tubular:d=8,o=5,b=180:e,a,e,b,e,g,a,e,c6,e,d6,e,b,c6,e,b,e,a,e,b,e,g,a,e,c6,e,d6,e,b,c6,e,a,e,b,e,g,a,e,c6,e,d6,e,b,c6,e,b,e,a,e,b,e,g,a,e,c6,e,d6,e,b,c6
