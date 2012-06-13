@@ -56,7 +56,7 @@ C 46100 42400 1 90 0 capacitor-1.sym
 T 45400 42600 5 10 0 0 90 0 1
 device=CAPACITOR
 T 45600 42600 5 10 1 1 90 0 1
-refdes=C?
+refdes=C1
 T 45200 42600 5 10 0 0 90 0 1
 symversion=0.1
 }
@@ -65,7 +65,7 @@ C 46800 42400 1 90 0 capacitor-1.sym
 T 46100 42600 5 10 0 0 90 0 1
 device=CAPACITOR
 T 46300 42600 5 10 1 1 90 0 1
-refdes=C?
+refdes=C2
 T 45900 42600 5 10 0 0 90 0 1
 symversion=0.1
 }
@@ -86,7 +86,7 @@ C 49800 48700 1 180 0 resistor-2.sym
 T 49400 48350 5 10 0 0 180 0 1
 device=RESISTOR
 T 49500 49000 5 10 1 1 180 0 1
-refdes=C?
+refdes=C3
 }
 N 48900 48600 46000 48600 4
 N 49800 48600 50100 48600 4
@@ -96,7 +96,7 @@ C 50100 48400 1 0 0 capacitor-1.sym
 T 50300 49100 5 10 0 0 0 0 1
 device=CAPACITOR
 T 50400 48900 5 10 1 1 0 0 1
-refdes=C?
+refdes=C4
 T 50300 49300 5 10 0 0 0 0 1
 symversion=0.1
 }
@@ -117,7 +117,7 @@ C 53300 47400 1 90 0 capacitor-1.sym
 T 52600 47600 5 10 0 0 90 0 1
 device=CAPACITOR
 T 52800 47600 5 10 1 1 90 0 1
-refdes=C?
+refdes=C5
 T 52400 47600 5 10 0 0 90 0 1
 symversion=0.1
 }
@@ -126,7 +126,7 @@ C 54200 47400 1 90 0 capacitor-1.sym
 T 53500 47600 5 10 0 0 90 0 1
 device=CAPACITOR
 T 53700 47600 5 10 1 1 90 0 1
-refdes=C?
+refdes=C6
 T 53300 47600 5 10 0 0 90 0 1
 symversion=0.1
 }
@@ -156,14 +156,14 @@ C 44100 44000 1 0 1 mosfet-with-diode-1.sym
 T 43200 44500 5 10 0 0 0 6 1
 device=NPN_TRANSISTOR
 T 43200 44500 5 10 1 1 0 6 1
-refdes=T?
+refdes=T1
 }
 C 45800 44400 1 0 0 resistor-2.sym
 {
 T 46200 44750 5 10 0 0 0 0 1
 device=RESISTOR
 T 46000 44700 5 10 1 1 0 0 1
-refdes=R?
+refdes=R1
 }
 N 46700 44500 47000 44500 4
 N 45800 44500 44100 44500 4
@@ -172,7 +172,7 @@ C 43500 47300 1 180 0 speaker-2.sym
 T 41600 44400 5 10 0 0 180 0 1
 device=SPEAKER
 T 42900 45300 5 10 1 1 180 0 1
-refdes=SPK?
+refdes=SPK1
 }
 N 43500 45400 43500 45000 4
 C 43300 47600 1 0 0 generic-power.sym
@@ -185,7 +185,7 @@ C 43600 46700 1 90 0 resistor-2.sym
 T 43250 47100 5 10 0 0 90 0 1
 device=RESISTOR
 T 43300 47100 5 10 1 1 90 0 1
-refdes=R?
+refdes=R2
 }
 N 43500 46700 43500 46600 4
 C 43700 43500 1 180 0 generic-power.sym
@@ -199,14 +199,14 @@ C 54200 44300 1 0 1 lm7805-1.sym
 T 52600 45600 5 10 0 0 0 6 1
 device=7805
 T 52800 45300 5 10 1 1 0 0 1
-refdes=U?
+refdes=U2
 }
 C 56100 44600 1 0 1 pwrjack-1.sym
 {
 T 56000 45100 5 10 0 0 0 6 1
 device=PWRJACK
 T 56100 45100 5 10 1 1 0 6 1
-refdes=J?
+refdes=J2
 }
 N 55200 44900 54200 44900 4
 N 55200 43800 55200 44700 4
@@ -217,7 +217,7 @@ C 52200 44800 1 270 0 capacitor-4.sym
 T 53300 44600 5 10 0 0 270 0 1
 device=POLARIZED_CAPACITOR
 T 52700 44000 5 10 1 1 0 0 1
-refdes=C?
+refdes=C7
 T 52900 44600 5 10 0 0 270 0 1
 symversion=0.1
 }
@@ -226,7 +226,7 @@ C 54600 44800 1 270 0 capacitor-4.sym
 T 55700 44600 5 10 0 0 270 0 1
 device=POLARIZED_CAPACITOR
 T 54700 44100 5 10 1 1 180 0 1
-refdes=C?
+refdes=C8
 T 55300 44600 5 10 0 0 270 0 1
 symversion=0.1
 }
@@ -235,7 +235,7 @@ C 54500 43900 1 90 0 capacitor-1.sym
 T 53800 44100 5 10 0 0 90 0 1
 device=CAPACITOR
 T 53900 44000 5 10 1 1 0 0 1
-refdes=C?
+refdes=C9
 T 53600 44100 5 10 0 0 90 0 1
 symversion=0.1
 }
@@ -244,7 +244,7 @@ C 52000 43900 1 90 0 capacitor-1.sym
 T 51300 44100 5 10 0 0 90 0 1
 device=CAPACITOR
 T 51500 44100 5 10 1 1 180 0 1
-refdes=C?
+refdes=C10
 T 51100 44100 5 10 0 0 90 0 1
 symversion=0.1
 }
