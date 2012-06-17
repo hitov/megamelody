@@ -1,0 +1,31 @@
+        elementdir = "../pcb-elements"		# where to put generated files
+# put all reference designators 1mm above origin
+        refdesx = 0mm
+        refdesy = 1mm
+	silkwidth = 10 mils
+	silkoffset = 1mm		# used if silkbox is invalid
+
+	maskclear = 6 mil		# total additional opening: 3 mils from pad to mask
+	polyclear = 6 mil
+        silkstyle = "inside"
+
+# single-row headers
+	type = "sip"
+	pins = 2
+        pitch = 2.54mm
+	drill = 1mm
+	paddia = 2mm
+part "SIP2"
+	pins = 3
+part "SIP3"
+	pins = 4
+part "SIP4"
+	pins = 5
+part "SIP5"
+	pins = 6
+part "SIP6"
+	pins = 8
+part "SIP8"
+	pins = 10
+part "SIP10"
+
