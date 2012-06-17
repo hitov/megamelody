@@ -1,3 +1,4 @@
 schematics megamelody.sch
+elements-dir ../pcb-elements
 output-name board
 
