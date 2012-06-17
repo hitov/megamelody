@@ -3,7 +3,7 @@ C 40000 40000 0 0 0 title-B.sym
 C 47000 43100 1 0 0 ATmega8-SMD.sym
 {
 T 47100 47900 5 10 0 0 0 0 1
-footprint=TQFP32
+footprint=Atmega8-QFP32
 T 49300 47700 5 10 1 1 0 6 1
 refdes=U1
 T 47100 48700 5 10 0 0 0 0 1
