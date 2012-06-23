@@ -29,13 +29,13 @@ N 50100 45200 49600 45200 4
 C 46200 48600 1 180 0 generic-power.sym
 {
 T 46000 48350 5 10 1 1 180 3 1
-net=Vcc
+net=Vcc:1
 }
 N 46000 48700 46000 48600 4
 C 43900 48400 1 90 0 generic-power.sym
 {
 T 43650 48600 5 10 1 1 90 3 1
-net=GND
+net=GND:1
 }
 N 43900 48600 44000 48600 4
 N 44000 48600 44000 48700 4
@@ -78,12 +78,12 @@ footprint=0805
 C 46100 42200 1 180 0 generic-power.sym
 {
 T 45900 41950 5 10 1 1 180 3 1
-net=GND
+net=GND:1
 }
 C 46800 42200 1 180 0 generic-power.sym
 {
 T 46600 41950 5 10 1 1 180 3 1
-net=GND
+net=GND:1
 }
 N 45900 42400 45900 42200 4
 N 46600 42400 46600 42200 4
@@ -113,13 +113,13 @@ footprint=0805
 C 51100 48800 1 270 0 generic-power.sym
 {
 T 51350 48600 5 10 1 1 270 3 1
-net=GND
+net=GND:1
 }
 N 51100 48600 51000 48600 4
 C 50400 44200 1 270 0 generic-power.sym
 {
 T 50650 44000 5 10 1 1 270 3 1
-net=Vcc
+net=Vcc:1
 }
 N 49600 44000 50400 44000 4
 C 53300 47400 1 90 0 capacitor-1.sym
@@ -147,22 +147,22 @@ footprint=0805
 C 52900 48300 1 0 0 generic-power.sym
 {
 T 53100 48550 5 10 1 1 0 3 1
-net=Vcc
+net=Vcc:1
 }
 C 53800 48300 1 0 0 generic-power.sym
 {
 T 54000 48550 5 10 1 1 0 3 1
-net=Vcc
+net=Vcc:1
 }
 C 53300 47400 1 180 0 generic-power.sym
 {
 T 53100 47150 5 10 1 1 180 3 1
-net=GND
+net=GND:1
 }
 C 54200 47400 1 180 0 generic-power.sym
 {
 T 54000 47150 5 10 1 1 180 3 1
-net=GND
+net=GND:1
 }
 N 45600 48000 50100 48000 4
 C 44100 44000 1 0 1 mosfet-with-diode-1.sym
@@ -198,7 +198,7 @@ N 43500 45400 43500 45000 4
 C 43300 47700 1 0 0 generic-power.sym
 {
 T 43500 47950 5 10 1 1 0 3 1
-net=+12V
+net=+12V:1
 }
 C 43600 46700 1 90 0 resistor-2.sym
 {
@@ -213,7 +213,7 @@ N 43500 46700 43500 46600 4
 C 43700 43500 1 180 0 generic-power.sym
 {
 T 43500 43250 5 10 1 1 180 3 1
-net=GND
+net=GND:1
 }
 N 43500 44000 43500 43500 4
 C 54200 44300 1 0 1 lm7805-1.sym
@@ -294,12 +294,12 @@ N 54800 43900 54800 43800 4
 C 51600 44900 1 0 0 generic-power.sym
 {
 T 51800 45150 5 10 1 1 0 3 1
-net=Vcc
+net=Vcc:1
 }
 C 54600 44900 1 0 0 generic-power.sym
 {
 T 54800 45150 5 10 1 1 0 3 1
-net=+12V
+net=+12V:1
 }
 C 56100 46500 1 180 0 connector2-1.sym
 {
@@ -313,7 +313,7 @@ footprint=SIP2
 C 54600 46000 1 180 0 generic-power.sym
 {
 T 54400 45750 5 10 1 1 180 3 1
-net=GND
+net=GND:1
 }
 C 51100 46700 1 90 0 resistor-2.sym
 {
@@ -329,7 +329,7 @@ N 51000 45800 51000 46700 4
 C 50800 47600 1 0 0 generic-power.sym
 {
 T 51000 47850 5 10 1 1 0 3 1
-net=Vcc
+net=Vcc:1
 }
 N 54400 46300 51000 46300 4
 N 43500 47700 43500 47600 4
@@ -358,3 +358,8 @@ footprint=MELF
 N 51000 47600 51900 47600 4
 N 51900 46600 51900 46300 4
 N 51900 47500 51900 47600 4
+C 53600 43800 1 180 0 generic-power.sym
+{
+T 53400 43550 5 10 1 1 180 3 1
+net=Vcc:1
+}
