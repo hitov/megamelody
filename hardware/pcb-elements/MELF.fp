@@ -1,11 +1,16 @@
-Element(0x00000000 "MELF" "" "" 0 0 -25 65 0 100 0x00000000)
+Element[0x00000000 "MELF" "" "" 0 0 -14295 -14405 0 100 0x00000000]
 (
-        Pad(0 -591 0 591 5118 5118 6120 "" "1" 0x00000100)
-        Pad(7480 -591 7480 591 5118 5118 6120 "" "2" 0x00000100)
-        ElementLine(-3800 -3700 -3800 3700 600)
-        ElementLine(11300 -3700 -3800 -3700 600)
-        ElementLine(11300 3700 11300 -3700 600)
-        ElementLine(-3800 3700 11300 3700 600)
-
+	Pad[-10334 -3445 -10334 3445 4921 2000 6921 "1" "1" 0x00000100]
+	Pad[10335 -3445 10335 3445 4921 2000 6921 "2" "2" 0x00000100]
+	ElementLine [14295 7405 -14295 7405 1000]
+	ElementLine [-14295 7405 -14295 -7405 1000]
+	ElementLine [-14295 -7405 14295 -7405 1000]
+	ElementLine [14295 -7405 14295 7405 1000]
+	ElementLine [-6374 -7405 -6374 7405 1000]
+	Attribute("description" "MELF")
+	Attribute("author" "Stefan Salewski")
+	Attribute("copyright" "2008 S. Salewski")
+	Attribute("use-license" "unlimited")
+	Attribute("dist-license" "GPL")
+	Attribute("documentation" "http://www.st.com/stonline/products/literature/ds/3484/tmbat49.pdf")
 )
-
