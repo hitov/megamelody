@@ -172,7 +172,7 @@ device=2SK2504TL
 T 43200 44500 5 10 1 1 0 6 1
 refdes=T1
 T 44100 44000 5 10 0 0 0 0 1
-footprint=SOT-428
+footprint=SOT428.fp
 }
 C 45800 44400 1 0 0 resistor-2.sym
 {
