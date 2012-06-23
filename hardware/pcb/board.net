@@ -2,7 +2,8 @@
 unnamed_net11	R2-1 SPK1-2 
 unnamed_net10	R1-1 T1-G 
 unnamed_net9	SPK1-1 T1-D 
-Vcc	D1-2 R3-2 J3-1 C7-1 C10-2 U2-3 C8-2 C9-1 C7-2 C10-1 J2-1 U2-2 T1-S C6-2 C6-1 C5-2 C5-1 C4-2 C2-1 C1-1 R4-2 J1-6 J1-1 U1-21 U1-5 U1-3 U1-6 U1-4 U1-18 
+GND	J3-1 C8-2 C9-1 C7-2 C10-1 J2-1 U2-2 T1-S C6-1 C5-1 C4-2 C2-1 C1-1 J1-1 U1-21 U1-5 U1-3 
+Vcc	D1-2 R3-2 C7-1 C10-2 U2-3 C6-2 C5-2 R4-2 J1-6 U1-6 U1-4 U1-18 
 unnamed_net8	D1-1 J3-2 R3-1 U1-26 
 unnamed_net7	J1-4 U1-17 
 unnamed_net6	J1-3 U1-16 
