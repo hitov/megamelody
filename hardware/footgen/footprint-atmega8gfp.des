@@ -1,5 +1,5 @@
 # Generic
-        elementdir = "../pcb-elements"
+        elementdir = "pcb-elements"
         silkwidth = 1000
         silkstyle = "inside"
         silkoffset = 1000

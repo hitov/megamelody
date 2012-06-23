@@ -1,0 +1,5 @@
+schematics sch/megamelody.sch
+elements-dir pcb-elements
+output-name pcb/board
+skip-m4 skip-m4
+

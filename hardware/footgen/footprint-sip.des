@@ -1,4 +1,4 @@
-        elementdir = "../pcb-elements"		# where to put generated files
+        elementdir = "pcb-elements"		# where to put generated files
 # put all reference designators 1mm above origin
         refdesx = 0mm
         refdesy = 1mm
