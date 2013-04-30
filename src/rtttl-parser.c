@@ -14,10 +14,9 @@ unsigned char *notes = notes_tbl;
 #else
 
 unsigned int notes[] =     {
-                //c,sc#,d,d#,e,e#(f),f#,g,g#,a,a#,b,b#
+                //c, c#,  d,   d#,  e,   e#(f),f#, g,   g#,  a,   a#,  b,   b#
                 261, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494, 523
             };
-
 #endif
 
 //kopira str2 v str1 do zadadeniq terminator (term) ili \0 
@@ -149,10 +148,11 @@ char *rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
 {
     char dotflag = 0, diezflag = 0;
     char *ptr;   
-    int  tmoct; 
-    
-    rtttl_hdl->DefaultOctave   = DEFAULT_OCTAVE;
-    rtttl_hdl->DefaultDuration = DEFAULT_DURATION;
+    int  tmoct;
+    int octave, duration;
+        
+    duration    =    rtttl_hdl->DefaultDuration;
+    octave      =    rtttl_hdl->DefaultOctave;    
     
     if(str_chr_term(rtttl_hdl->buffer, '.', ',')) dotflag = 1;
     if(str_chr_term(rtttl_hdl->buffer, '#', ',')) diezflag = 1;
@@ -163,7 +163,7 @@ char *rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
     
     if(ptr < rtttl_hdl->buffer)
     {
-        rtttl_hdl->DefaultDuration = atoi10_digits(ptr);
+        duration = atoi10_digits(ptr);
     }
     
     if( dotflag && diezflag )
@@ -179,7 +179,7 @@ char *rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
         tmoct = atoi10_digits(rtttl_hdl->buffer + 1);
     }
     
-    if(validoctave(tmoct)) rtttl_hdl->DefaultOctave = tmoct;
+    if(validoctave(tmoct)) octave = tmoct;
     
     note->freq = 0;
 
@@ -242,11 +242,11 @@ char *rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
             }  
     }
     
-    note->freq <<= rtttl_hdl->DefaultOctave - 4;
-    note->len = ( 60000 / rtttl_hdl->DefaultTempo / rtttl_hdl->DefaultDuration) * 4;
+    note->freq <<= octave - 4;
+    note->len = ( 60000 / rtttl_hdl->DefaultTempo / duration) * 4;
     if(dotflag) note->len = note->len + note->len / 2;
     
-    printf("octave = %d\n", rtttl_hdl->DefaultOctave);
+    //printf("octave = %d\n", rtttl_hdl->DefaultOctave);
     
     rtttl_hdl->buffer = str_pbrk(rtttl_hdl->buffer, ",");
     if(rtttl_hdl->buffer) rtttl_hdl->buffer++;
@@ -254,35 +254,18 @@ char *rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
     return rtttl_hdl->buffer;
 }
 
-#define str     "d=4,o=6,b=140:8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e4,8c7"
-
-int main()
-{
-    rtttl_handle_t rtttl_hdl;
-    play_note_t note;
-    
-    printf("o = %d\n", getattrib(str, 'o'));
-    printf("d = %d\n", getattrib(str, 'd'));
-    printf("b = %d\n", getattrib(str, 'b'));
-    
-    rtttl_parser_init(&rtttl_hdl, str);
-    
-    while(rtttl_get_next_note(&rtttl_hdl, &note))
-    {
-        printf("%d %d \n", note.freq, note.len);
-    }
-    
-    return 0;
-}
-
 #if 0
+
+#define FALSE 0
+#define TRUE 1
+
 unsigned char DefaultDuration; //1-32 means 1/1, 1/2, 1/4, 1/8, 1/16, 1/32 ...
 unsigned char DefaultOctave;
 unsigned char DefaultTempo;
 
-extern unsigned char notes_tbbl[];
+//extern unsigned char notes_tbbl[];
 
-unsigned char *notes = notes_tbl;
+//unsigned char *notes = notes_tbl;
 //unsigned int notes[] =     {
 //                //c,c#,d,d#,e,e#(f),f#,g,g#,a,a#,b,b#
 //                261,277,294,311,330,349,370,392,415,440,466, 494, 523
@@ -300,13 +283,14 @@ int getoctave(char *str)
     strcpy(tmps, str);
     return atoi(tmps);
 }
-
+/*
 char validoctave(int oct)
 {
     if( (oct >= 4) && (oct <= 8) ) return 1;
     return 0;
 }
-
+*/
+/*
 //kopira str2 v str1 do zadadeniq terminator (term) ili \0 
 //i vrushta ukazatel kum simvola sled zapetaqta ili \0
 char *strcpy_term(char *str1, char *str2, char term)
@@ -315,11 +299,11 @@ char *strcpy_term(char *str1, char *str2, char term)
     *str1 = 0;
     return (*str2) ? ++str2 : str2;
 }
-
+*/
 //vrushta stoinost na parametur sudurjasht se v str - 
 //<atr>=xxx -> return atoi(xxx)
 //pri lipsa na parametur vrushta 0
-int getattrib(char *str, char atr)
+int getattrib1(char *str, char atr)
 {
     int i,j;
     char tmp[10], *p;
@@ -438,10 +422,13 @@ void RTTTL_PlayNote(char *str)
     freq <<= octave - 4;
     len = (60000 / DefaultTempo / duration) * 4;
     if(dotflag) len = len + len / 2;
-    PlayTone(freq, len);
-    while( !ToneIsComplete() );
+    //PlayTone(freq, len);
+    //while( !ToneIsComplete() );
+    printf("P1 - freq = %d, len = %d\n", freq, len);
 }
 
+    rtttl_handle_t rtttl_hdl;
+    play_note_t note;
 
 void RTTTL_Play(char *str)
 {
@@ -451,16 +438,42 @@ void RTTTL_Play(char *str)
     DefaultTempo = 63;
     DefaultDuration = 4;
     
-    if((i = getattrib(str,'o'))) DefaultOctave   = i;
-    if((i = getattrib(str,'b'))) DefaultTempo    = i;
-    if((i = getattrib(str,'d'))) DefaultDuration = i;
+    rtttl_parser_init(&rtttl_hdl, str);
+    
+    if((i = getattrib1(str,'o'))) DefaultOctave   = i;
+    if((i = getattrib1(str,'b'))) DefaultTempo    = i;
+    if((i = getattrib1(str,'d'))) DefaultDuration = i;
     
     p=strcpy_term(tmps,str, ':');
+    
     while(*p)
     {
         p = strcpy_term(tmps,p,',');
         RTTTL_PlayNote(tmps);
+	rtttl_get_next_note(&rtttl_hdl, &note);
+	printf("P2 - freq = %d, len = %d\n\n", note.freq, note.len);
     }
 }
 
 #endif
+
+
+//#define str     "d=4,o=6,b=140:8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e4,8c7"
+#define str "d=4,o=5,b=140:c6,8f6,8e6,8d6,8c6,a.,8c6,8f6,8e6,8d6,8d#6,e.6,8e6,8e6,8c6,8d6,8c6,8e6,8c6,8d6,8a,8c6,8g,8a#,8a,8f"
+
+int main()
+{
+    //rtttl_handle_t rtttl_hdl;
+    //play_note_t note;
+    
+    //rtttl_parser_init(&rtttl_hdl, str);
+    
+    //while(rtttl_get_next_note(&rtttl_hdl, &note))
+    //{
+    //    printf("%d %d \n", note.freq, note.len);
+    //}
+    
+    //RTTTL_Play(str);
+    
+    return 0;
+}
