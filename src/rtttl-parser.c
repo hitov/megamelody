@@ -7,6 +7,19 @@
 #define DEFAULT_TEMPO    (63)
 #define DEFAULT_DURATION (4)
 
+#ifdef notes_tbl
+
+unsigned char *notes = notes_tbl;
+
+#else
+
+unsigned int notes[] =     {
+                //c,sc#,d,d#,e,e#(f),f#,g,g#,a,a#,b,b#
+                261, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494, 523
+            };
+
+#endif
+
 //kopira str2 v str1 do zadadeniq terminator (term) ili \0 
 //i vrushta ukazatel kum simvola sled zapetaqta ili \0
 char *strcpy_term(char *str1, char *str2, char term)
@@ -16,18 +29,46 @@ char *strcpy_term(char *str1, char *str2, char term)
     return (*str2) ? ++str2 : str2;
 }
 
-char *str_goto(char *str, char term)
+char *str_chr(char *str, char chr)
 {
-    while( *str && (*str != term) ) str++;
+    while( *str && (*str != chr) ) str++;
     return str;
+}
+
+char *str_chr_term(char *str, char chr, char term)
+{
+    while( *str && (*str != chr) ) 
+    {
+        str++;
+	if (*str == term) return NULL;
+    }
+    if (*str == '\0') return NULL;
+    return str;
+}
+
+char *str_pbrk(char *str, char *brks)
+{
+    int i;
+    while( *str )
+    {
+        for(i = 0; brks[i]; i++)
+	{
+	    if(*str == brks[i]) return str;
+	}
+        str++;
+    }
+    return NULL;
 }
 
 int atoi10_term(char *ptr, char *terms)
 {
     int  val = 0, mul = 1;
-    int  len;
     char *rev;
-    rev = strpbrk(ptr, terms) - 1; 
+    rev = str_pbrk(ptr, terms);
+    
+    if(rev == ptr) return 0;
+    
+    rev--;
     
     while(rev >= ptr)
     {
@@ -37,37 +78,56 @@ int atoi10_term(char *ptr, char *terms)
     return val;
 }
 
-//vrushta stoinost na parametur sudurjasht se v str - 
-//<atr>=xxx -> return atoi(xxx)
-//pri lipsa na parametur vrushta 0
-int getattrib_old(char *str, char atr)
+int atoi10_digits(char *ptr)
 {
-    int i,j;
-    char tmp[10], *p;
-    for(i = 0; str[i]; i++)
+    int  val = 0, mul = 1;
+    char *rev = ptr;
+    
+    while( *rev && ( *rev >= '0' && *rev <= '9' ) ) rev++;
+    
+    if(rev == ptr) return 0; 
+    
+    rev--;
+    
+    while(rev >= ptr)
     {
-        if( (str[i] == atr) && ( str[i+1] == '=') )
-        {
-            for(j = i + 2; str[j] && (str[j] != ',') && (str[j] != ':'); j++)
-            {
-                tmp[j - i - 2] = str[j];
-            }
-            tmp[j - i - 2] = 0;
-            return atoi(tmp);
-        }
+        val += (*rev-- - '0') * mul;
+        mul *= 10;
     }
-    return 0;
+    return val;
 }
 
 int getattrib(char *str, char atr)
 {
     char *ptr = str;
     do {
-        ptr = str_goto(ptr, atr);
+        ptr = str_chr(ptr, atr);
     }while( *ptr && (*(ptr + 1) != '=') );
     
     if(*ptr) ptr += 2;
     return atoi10_term(ptr, " ,:\t");
+}
+
+char is_note_char(char c)
+{
+    if( (( c >= 'a') && ( c <= 'g')) || (c == 'p') ) return 1;
+    return 0;
+}
+
+char validoctave(int oct)
+{
+    if( (oct >= 4) && (oct <= 8) ) return 1;
+    return 0;
+}
+
+char *find_note(char *ptr, char term)
+{
+    while(*ptr)
+    {
+        if(is_note_char(*ptr)) return ptr;
+	if(*ptr == term) return ptr + 1;
+        ptr++;
+    }
 }
 
 void rtttl_parser_init(rtttl_handle_t *rtttl_hdl, char *str)
@@ -81,19 +141,120 @@ void rtttl_parser_init(rtttl_handle_t *rtttl_hdl, char *str)
     if((i = getattrib(str,'b'))) rtttl_hdl->DefaultTempo    = i;
     if((i = getattrib(str,'d'))) rtttl_hdl->DefaultDuration = i;
     
-    rtttl_hdl->buffer = str_goto(str, ':');
+    rtttl_hdl->buffer = str_chr(str, ':');
+    if(rtttl_hdl->buffer) rtttl_hdl->buffer++;
 }
 
-int rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
+char *rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
 {
-    char tmps[20];
-    rtttl_hdl->buffer = strcpy_term(tmps, rtttl_hdl->buffer, ',');
-    note->freq = 1;
-    note->len = 1;
-    return *rtttl_hdl->buffer;
+    char dotflag = 0, diezflag = 0;
+    char *ptr;   
+    int  tmoct; 
+    
+    rtttl_hdl->DefaultOctave   = DEFAULT_OCTAVE;
+    rtttl_hdl->DefaultDuration = DEFAULT_DURATION;
+    
+    if(str_chr_term(rtttl_hdl->buffer, '.', ',')) dotflag = 1;
+    if(str_chr_term(rtttl_hdl->buffer, '#', ',')) diezflag = 1;
+    
+    ptr = rtttl_hdl->buffer;
+    
+    rtttl_hdl->buffer = find_note(rtttl_hdl->buffer, ',');
+    
+    if(ptr < rtttl_hdl->buffer)
+    {
+        rtttl_hdl->DefaultDuration = atoi10_digits(ptr);
+    }
+    
+    if( dotflag && diezflag )
+    {    
+        tmoct = atoi10_digits(rtttl_hdl->buffer + 3);
+    } 
+    else if( dotflag || diezflag ) 
+    {    
+        tmoct = atoi10_digits(rtttl_hdl->buffer + 2);
+    } 
+    else
+    {
+        tmoct = atoi10_digits(rtttl_hdl->buffer + 1);
+    }
+    
+    if(validoctave(tmoct)) rtttl_hdl->DefaultOctave = tmoct;
+    
+    note->freq = 0;
+
+    if( !diezflag )
+    {    
+        switch( *rtttl_hdl->buffer )
+        {
+            case 'c':       
+	        note->freq = notes[0];
+                break;
+		
+            case 'd':
+	        note->freq = notes[2];
+                break;
+	      
+            case 'e':
+	        note->freq = notes[4];
+                break;
+		  
+            case 'f':
+	        note->freq = notes[5];
+                break;
+		  
+            case 'g':       
+	        note->freq = notes[7];
+                break;
+		  
+            case 'a':
+	        note->freq = notes[9];
+                break;
+		  
+            case 'b':
+	        note->freq = notes[11];
+                break;
+        }
+    } else {
+            switch(*rtttl_hdl->buffer)
+            {
+            case 'c':
+	        note->freq = notes[1];
+                break;
+            case 'd':       
+	        note->freq = notes[3];
+                break;
+            case 'e':
+	        note->freq = notes[5];
+                break;
+            case 'f':
+	        note->freq = notes[6];
+                break;
+            case 'g':
+	        note->freq = notes[8];
+                break;
+            case 'a':
+	        note->freq = notes[10];
+                break;
+            case 'b':
+	        note->freq = notes[12];
+                break;
+            }  
+    }
+    
+    note->freq <<= rtttl_hdl->DefaultOctave - 4;
+    note->len = ( 60000 / rtttl_hdl->DefaultTempo / rtttl_hdl->DefaultDuration) * 4;
+    if(dotflag) note->len = note->len + note->len / 2;
+    
+    printf("octave = %d\n", rtttl_hdl->DefaultOctave);
+    
+    rtttl_hdl->buffer = str_pbrk(rtttl_hdl->buffer, ",");
+    if(rtttl_hdl->buffer) rtttl_hdl->buffer++;
+    
+    return rtttl_hdl->buffer;
 }
 
-#define str     "d=4,o=6,b=140:8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c"
+#define str     "d=4,o=6,b=140:8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e4,8c7"
 
 int main()
 {
