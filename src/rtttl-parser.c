@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "rtttl-parser.h"
 
@@ -6,10 +7,40 @@
 #define DEFAULT_TEMPO    (63)
 #define DEFAULT_DURATION (4)
 
+//kopira str2 v str1 do zadadeniq terminator (term) ili \0 
+//i vrushta ukazatel kum simvola sled zapetaqta ili \0
+char *strcpy_term(char *str1, char *str2, char term)
+{
+    while( *str2 && (*str2 != term) ) *str1 ++= *str2++;
+    *str1 = 0;
+    return (*str2) ? ++str2 : str2;
+}
+
+char *str_goto(char *str, char term)
+{
+    while( *str && (*str != term) ) str++;
+    return str;
+}
+
+int atoi10_term(char *ptr, char *terms)
+{
+    int  val = 0, mul = 1;
+    int  len;
+    char *rev;
+    rev = strpbrk(ptr, terms) - 1; 
+    
+    while(rev >= ptr)
+    {
+        val += (*rev-- - '0') * mul;
+        mul *= 10;
+    }
+    return val;
+}
+
 //vrushta stoinost na parametur sudurjasht se v str - 
 //<atr>=xxx -> return atoi(xxx)
 //pri lipsa na parametur vrushta 0
-int getattrib(char *str, char atr)
+int getattrib_old(char *str, char atr)
 {
     int i,j;
     char tmp[10], *p;
@@ -28,13 +59,15 @@ int getattrib(char *str, char atr)
     return 0;
 }
 
-//kopira str2 v str1 do zadadeniq terminator (term) ili \0 
-//i vrushta ukazatel kum simvola sled zapetaqta ili \0
-char *strcpy_term(char *str1, char *str2, char term)
+int getattrib(char *str, char atr)
 {
-    while( *str2 && (*str2!=term) ) *str1 ++= *str2++;
-    *str1 = 0;
-    return (*str2) ? ++str2 : str2;
+    char *ptr = str;
+    do {
+        ptr = str_goto(ptr, atr);
+    }while( *ptr && (*(ptr + 1) != '=') );
+    
+    if(*ptr) ptr += 2;
+    return atoi10_term(ptr, " ,:\t");
 }
 
 void rtttl_parser_init(rtttl_handle_t *rtttl_hdl, char *str)
@@ -48,7 +81,7 @@ void rtttl_parser_init(rtttl_handle_t *rtttl_hdl, char *str)
     if((i = getattrib(str,'b'))) rtttl_hdl->DefaultTempo    = i;
     if((i = getattrib(str,'d'))) rtttl_hdl->DefaultDuration = i;
     
-    rtttl_hdl->buffer = strcpy_term(tmps,str, ':');
+    rtttl_hdl->buffer = str_goto(str, ':');
 }
 
 int rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
@@ -57,10 +90,27 @@ int rtttl_get_next_note(rtttl_handle_t *rtttl_hdl, play_note_t *note)
     rtttl_hdl->buffer = strcpy_term(tmps, rtttl_hdl->buffer, ',');
     note->freq = 1;
     note->len = 1;
+    return *rtttl_hdl->buffer;
 }
+
+#define str     "d=4,o=6,b=140:8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c,8e,8c"
 
 int main()
 {
+    rtttl_handle_t rtttl_hdl;
+    play_note_t note;
+    
+    printf("o = %d\n", getattrib(str, 'o'));
+    printf("d = %d\n", getattrib(str, 'd'));
+    printf("b = %d\n", getattrib(str, 'b'));
+    
+    rtttl_parser_init(&rtttl_hdl, str);
+    
+    while(rtttl_get_next_note(&rtttl_hdl, &note))
+    {
+        printf("%d %d \n", note.freq, note.len);
+    }
+    
     return 0;
 }
 
